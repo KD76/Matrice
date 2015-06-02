@@ -2,12 +2,14 @@ import java.math.BigDecimal;
 
 /**
  * Classe complémentant la gestion des matrices carrées.
+ *
  * @author Douaa Elkhalfi, Julien Guittat, Thomas Brenière, Kévin Dumanoir
  */
 public class MatriceCarree extends Matrice {
 
     /**
      * Crée une matrice carrée vide d'ordre order.
+     *
      * @param order Ordre de la matrice
      */
     public MatriceCarree(int order) {
@@ -16,13 +18,14 @@ public class MatriceCarree extends Matrice {
 
     /**
      * Crée une matrice carrée à partir d'un double tableau de double.
+     *
      * @param fillData double tableau de données
      */
-    public MatriceCarree(double[][] fillData){
+    public MatriceCarree(double[][] fillData) {
         if (fillData.length != fillData[0].length) {
             int minrow = Math.min(fillData.length, fillData[0].length);
             double[][] newdata = new double[minrow][minrow];
-            for(int i=0; i<minrow; i++) {
+            for (int i = 0; i < minrow; i++) {
                 System.arraycopy(fillData[i], 0, newdata[i], 0, newdata.length);
             }
             fillData = newdata;
@@ -33,12 +36,13 @@ public class MatriceCarree extends Matrice {
 
     /**
      * Crée une matrice identité d'ordre order
+     *
      * @param order Ordre de l'itentité
      * @return Matrice identité
      */
     public static MatriceCarree getIdentity(int order) {
         double[][] data = new double[order][order];
-        for (int i=0; i<order; i++) {
+        for (int i = 0; i < order; i++) {
             data[i][i] = 1;
         }
         return new MatriceCarree(data);
@@ -46,6 +50,7 @@ public class MatriceCarree extends Matrice {
 
     /**
      * Vérifie si la matrice est inversible.
+     *
      * @return Vrai si la matrice est inversible, faux sinon.
      */
     public boolean hasInvert() {
@@ -58,6 +63,7 @@ public class MatriceCarree extends Matrice {
 
     /**
      * Calcule l'inverse de la matrice en cours.
+     *
      * @return Matrice inverse.
      */
     public MatriceCarree getInverted() {
@@ -75,12 +81,13 @@ public class MatriceCarree extends Matrice {
 
     /**
      * Calcule le déterminant de la matrice.
+     *
      * @return Déterminant
      */
     public double det() {
         double[][] echelon = echelonnage();
-        double det=1;
-        for(int i=0; i<order(); i++) {
+        double det = 1;
+        for (int i = 0; i < order(); i++) {
             det *= echelon[i][i];
         }
         return new BigDecimal(Double.toString(det)).setScale(7, BigDecimal.ROUND_HALF_UP).doubleValue();

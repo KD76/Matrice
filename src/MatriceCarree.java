@@ -73,6 +73,10 @@ public class MatriceCarree extends Matrice {
         return convertedMatrices[1].toMatriceCarree();
     }
 
+    /**
+     * Calcule le déterminant de la matrice.
+     * @return Déterminant
+     */
     public double det() {
         double[][] echelon = echelonnage();
         double det=1;

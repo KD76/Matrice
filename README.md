@@ -1,5 +1,5 @@
 # Matrice
-Un beau petit pack de deux classes permettant les additions usuelles, mais également l'inversion et le déterminant de matrices (carrées) !
+Un beau petit pack de deux classes permettant les additions/multiplications usuelles, mais également l'inversion et le déterminant de matrices (carrées) !
 
 ### Prérequis
 Comprendre Java, les notions d'objets, les méthodes statiques, ainsi que l'héritage et les propriétés qui en découlent.

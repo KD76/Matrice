@@ -25,8 +25,11 @@ public class Matrice {
      * @param columns Nombre de colonnes.
      */
     public Matrice(int rows, int columns) {
-        data = new double[rows][columns];
-        sepMaxLength = new int[columns];
+        data = new double[rows][columns]; // Création d'un "tableau de tableau de double" (définition du double tableau) dans l'ordre suivant : tableau de (rows) tableau de (columns) nombres.
+        // EXPLICATION : Dans la matrice, on gère les nombres de la façon suivante : On utilise un double tableau qui prend en 1er index le numéro de ligne, puis le numéro de colonne en second paramètre.
+        // Ainsi, lorsque l'on créera un tableau pour notre matrice, on devra faire un tableau de LIGNES, et pas un tableau de COLONNES (Voir fichier Main.java pour avoir un exemple)
+
+        sepMaxLength = new int[columns]; // On crée un tableau qui contiendra la taille du nombre le plus "large" (donc, les grands nombres, mais aussi ceux avec plein de décimales ! Le procédé est expliqué après.)
     }
 
     /**
@@ -35,25 +38,29 @@ public class Matrice {
      * @param fillData Double tableau "source".
      */
     public Matrice(double[][] fillData) {
-        data = copyArray(fillData);
-        sepMaxLength = new int[fillData[0].length];
+        data = copyArray(fillData); // On copie le tableau d'entrée afin de ne pas avoir de problèmes de modification extérieure de tableau.
+        // En effet, l'élément double[][] n'est pas le double-tableau en lui-même, mais uniquement son pointeur ! De ce fait, si copie juste le pointeur,
+        // il suffit de modifier le double tableau à l'extérieur de la matrice pour altérer son contenu ! Et ça, c'est pas cool !
+
+        sepMaxLength = new int[fillData[0].length]; // Idem que pour la méthode précédente.
     }
 
-    protected Matrice() {
+    protected Matrice() { // HORS PROGRAMME - Fonctionnement secondaire du programme, rien d'important.
     }
 
     /**
+     * Récupère un élément de la matrice suivant la ligne et la colonne demandée.
      * @param row    Ligne demandée (commence à partir de 1 !)
      * @param column Colonne demandée (idem, même précautions que pour les lignes.)
      * @return Element de la matrice à la position row,column
      */
     public double get(int row, int column) {
-        if (row < 1 || row > data.length || column < 1 || column > data[0].length) {
-            System.err.println("[ERREUR] La ligne/colonne demandée est hors-matrice. Zéro retourné.");
-            return 0;
+        if (row < 1 || row > data.length || column < 1 || column > data[0].length) { // Si le numéro de ligne/colonne est en dehors des limites de la matrice,
+            System.err.println("[ERREUR] La ligne/colonne demandée est hors-matrice. Zéro retourné."); // On affiche un message d'erreur...
+            return 0; // Et on retourne 0.
         }
 
-        return data[row - 1][column - 1];
+        return data[row - 1][column - 1]; // Sinon, on retourne le nombre contenu dans le double-tableau de données de la matrice.
     }
 
     /**
@@ -64,36 +71,36 @@ public class Matrice {
      * @param value  Valeur à insérer dans la matrice.
      */
     public void set(int row, int column, double value) {
-        if (row < 1 || row > data.length || column < 1 || column > data[0].length) {
+        if (row < 1 || row > data.length || column < 1 || column > data[0].length) { // Pareil que pour en haut...
             System.err.println("[ERREUR] La ligne/colonne demandée est hors-matrice.");
             return;
         }
 
-        data[row - 1][column - 1] = value;
-        int valueStringLength = Double.toString(value).length();
-        if (sepMaxLength[column - 1] != 0 && sepMaxLength[column - 1] < valueStringLength + 1)
-            sepMaxLength[column - 1] = valueStringLength + 1;
+        data[row - 1][column - 1] = value; // ... sauf que cette fois, on ne retourne pas le nombre contenu, on le remplace.
+        int valueStringLength = Double.toString(value).length(); // (Optionnel, plutôt difficile) On récupère la longueur du nombre stocké...
+        if (sepMaxLength[column - 1] != 0 && sepMaxLength[column - 1] < valueStringLength + 1) // ... Si la longueur maximale de la colonne est plus petite que la longueur du nouveau nombre,
+            sepMaxLength[column - 1] = valueStringLength + 1; // Alors la nouvelle longueur maximale est celle du nouveau nombre, +1 (pour l'espace entre les colonnes)
     }
 
     /**
      * @return Double tableau des valeurs de la matrice.
      */
     public double[][] getData() {
-        return copyArray(data);
+        return copyArray(data); // Fait une copie du tableau de la matrice et le renvoie. Cela permet, en toute circonstance, de préserver les données de la matrice, c'est à dire d'empêcher les modifications extérieures non sollicitées.
     }
 
     /**
      * @return Nombre de ligne de la matrice.
      */
     public int rowsCount() {
-        return data.length;
+        return data.length; // Renvoie le nombre de tableaux contenus dans le double tableau, soit le nombre de lignes.
     }
 
     /**
      * @return Nombre de colonnes de la matrice.
      */
     public int columnsCount() {
-        return data[0].length;
+        return data[0].length; // Renvoie le nombre de "nombres" contenus dans le premier tableau du double tableau, ce qui est le nombre de colonnes.
     }
 
     /**

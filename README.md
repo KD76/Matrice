@@ -4,7 +4,7 @@ Un beau petit pack de deux classes permettant les additions usuelles, mais égal
 ### Prérequis
 Comprendre Java, les notions d'objets, les méthodes statiques, ainsi que l'héritage et les propriétés qui en découlent.
 
-Cette classe est à la base un mini projet de première année de l'INSA de Lyon.
+Ces classes sont à la base un mini projet de première année de l'INSA de Lyon.
 
 ### Compilation et utilisation
 Un dossier nommé "binaries" sera rajouté plus tard, et contiendra l'exécutable windows (.exe) et l'universel (.jar). Il est essentiel d'avoir **Java 1.7** d'installé sur son ordinateur.

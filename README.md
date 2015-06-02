@@ -1,6 +1,10 @@
 # Matrice
 Un beau petit pack de deux classes permettant les additions/multiplications usuelles, mais également l'inversion et le déterminant de matrices (carrées) !
 
+### Préambule
+Afin de faciliter la compréhension de ce code, celui-ci sera entièrement commenté (c'est à dire, **ligne par ligne**).
+Pour les utilisateurs confirmés, une version non commentée sera disponible sur une branche secondaire.
+
 ### Prérequis
 Comprendre Java, les notions d'objets, les méthodes statiques, ainsi que l'héritage et les propriétés qui en découlent.
 

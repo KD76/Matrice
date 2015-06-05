@@ -77,9 +77,7 @@ public class Matrice {
         }
 
         data[row - 1][column - 1] = value; // ... sauf que cette fois, on ne retourne pas le nombre contenu, on le remplace.
-        int valueStringLength = Double.toString(value).length(); // (Optionnel, plutôt difficile) On récupère la longueur du nombre stocké...
-        if (sepMaxLength[column - 1] != 0 && sepMaxLength[column - 1] < valueStringLength + 1) // ... Si la longueur maximale de la colonne est plus petite que la longueur du nouveau nombre,
-            sepMaxLength[column - 1] = valueStringLength + 1; // Alors la nouvelle longueur maximale est celle du nouveau nombre, +1 (pour l'espace entre les colonnes)
+        updateSeparator(value, (column - 1)); // On met à jour le système d'alignement des nombres.
     }
 
     /**
@@ -110,12 +108,10 @@ public class Matrice {
      * @return Matrice en cours d'exploitation.
      */
     public Matrice add(double scalaire) {
-        for (int i = 0; i < data.length; i++) {
-            for (int j = 0; j < data[0].length; j++) {
-                data[i][j] += scalaire;
-                int valueStringLength = Double.toString(data[i][j]).length();
-                if (sepMaxLength[j] != 0 && sepMaxLength[j] < valueStringLength + 1)
-                    sepMaxLength[j] = valueStringLength + 1;
+        for (int i = 0; i < data.length; i++) { // Pour chaque sous tableau du double-tableau...
+            for (int j = 0; j < data[0].length; j++) { // Pour chaque valeur du sous-tableau en cours...
+                data[i][j] += scalaire; // On ajoute le scalaire.
+                updateSeparator(data[i][j], j); // On met à jour le système d'alignement des nombres.
             }
         }
         return this;
@@ -128,18 +124,16 @@ public class Matrice {
      * @return Matrice en cours d'exploitation.
      */
     public Matrice add(Matrice m) {
-        if (data[0].length != m.rowsCount()) {
-            System.err.println("[ERREUR] Les matrices sont incompatibles. Matrice Id1 retournée.");
-            return (new Matrice(1, 1)).add(1);
+        if (data.length != m.rowsCount() || data[0].length != m.columnsCount()) { // Si les matrices n'ont pas le même nombre de lignes ou de colonnes,
+            System.err.println("[ERREUR] Les matrices sont incompatibles. Matrice Id1 retournée."); // Alors on affiche une erreur,
+            return (new Matrice(1, 1)).add(1); // Et on renvoit une matrice 1x1 contenant un 1 (c'est la "Matrice d'erreur")
         }
-        double[][] fromMat = m.getData();
-        int columnLength = fromMat[0].length;
-        for (int i = 0; i < fromMat.length; i++) {
-            for (int j = 0; j < columnLength; j++) {
-                data[i][j] += fromMat[i][j];
-                int valueStringLength = Double.toString(data[i][j]).length();
-                if (sepMaxLength[j] != 0 && sepMaxLength[j] < valueStringLength + 1)
-                    sepMaxLength[j] = valueStringLength + 1;
+        double[][] fromMat = m.getData(); // On récupère le double tableau de nombres de la matrice à ajouter
+        int columnLength = fromMat[0].length; // On stocke le nombre de colonnes du double tableau
+        for (int i = 0; i < fromMat.length; i++) { // Pour chaque sous-tableau du double tableau...
+            for (int j = 0; j < columnLength; j++) { // Pour chaque valeur du sous-tableau en cours...
+                data[i][j] += fromMat[i][j]; // On ajoute à notre matrice la valeur de la matrice M aux mêmes coordonnées.
+                updateSeparator(data[i][j], j); // On met à jour le système d'alignement des nombres.
             }
         }
 
@@ -182,9 +176,7 @@ public class Matrice {
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[0].length; j++) {
                 data[i][j] *= scalaire;
-                int valueStringLength = Double.toString(data[i][j]).length();
-                if (sepMaxLength[j] != 0 && sepMaxLength[j] < valueStringLength + 1)
-                    sepMaxLength[j] = valueStringLength + 1;
+                updateSeparator(data[i][j], j);
             }
         }
         return this;
@@ -355,6 +347,20 @@ public class Matrice {
             }
         }
         return pos;
+    }
+
+    /**
+     * Met à jour le système d'alignement des nombres de la même colonne.
+     *
+     * @param value Valeur à exploiter pour la mise à jour
+     * @param col   Numéro de la colonne à mettre à jour
+     */
+    private void updateSeparator(double value, int col) {
+        if (col >= sepMaxLength.length || col < 0)
+            return;
+        int valueStringLength = Double.toString(value).length(); // (Optionnel, plutôt difficile) On récupère la longueur du nombre stocké...
+        if (sepMaxLength[col] != 0 && sepMaxLength[col] < valueStringLength + 1) // ... Si la longueur maximale de la colonne est plus petite que la longueur du nouveau nombre,
+            sepMaxLength[col] = valueStringLength + 1; // Alors la nouvelle longueur maximale est celle du nouveau nombre, +1 (pour l'espace entre les colonnes)
     }
 
     /**
